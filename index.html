@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>THUMB TITANS</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div id="app">
+    <div class="starbg" id="starsBg"></div>
+    <canvas id="gameCanvas"></canvas>
+
+    <!-- HUD -->
+    <div id="hud" class="off">
+      <div class="hround">
+        <div class="hlabel">RONDA</div>
+        <div class="hscore" id="hudScore">0 — 0</div>
+      </div>
+      <div class="htimer" id="hudTimer">90</div>
+      <div class="hlives" id="hudLives"></div>
+      <div class="hcds">
+        <div class="cdic" title="Parry">🛡<div class="cdfi" id="cdParry"></div></div>
+        <div class="cdic" title="Dash">💨<div class="cdfi" id="cdDash"></div></div>
+      </div>
+    </div>
+
+    <div class="pwarn" id="phaseWarning">⚠ ZONA DE PELIGRO</div>
+    <div class="thint" id="touchHint">Arrastra = mover · Suelta rápido = jab · Hold = smash · 2º dedo = parry</div>
+    <div class="cfti" id="confettiLayer"></div>
+    <div class="toast off" id="toast"></div>
+
+    <!-- HOME SCREEN -->
+    <div class="screen" id="screenHome">
+      <div class="logo">THUMB<br><span>TITANS</span></div>
+      <div class="tagline">Arena Battle · 2-4 Players</div>
+
+      <div class="field-group">
+        <label class="lbl">Tu nombre</label>
+        <input type="text" id="inputName" placeholder="TITAN" maxlength="12">
+      </div>
+
+      <div class="field-group">
+        <label class="lbl">Color</label>
+        <div class="cpick" id="colorPicker">
+          <div class="cdot sel" data-c="#00f5ff" style="background:#00f5ff;box-shadow:0 0 14px #00f5ff"></div>
+          <div class="cdot" data-c="#ff00aa" style="background:#ff00aa;box-shadow:0 0 14px #ff00aa"></div>
+          <div class="cdot" data-c="#ffd700" style="background:#ffd700;box-shadow:0 0 14px #ffd700"></div>
+          <div class="cdot" data-c="#39ff14" style="background:#39ff14;box-shadow:0 0 14px #39ff14"></div>
+        </div>
+      </div>
+
+      <div class="mode-selector">
+        <button class="mbt on" id="btnSolo" data-mode="solo">🎮 Local 2P</button>
+        <button class="mbt" id="btnOnline" data-mode="online">🌐 Online</button>
+      </div>
+
+      <div id="sectionSolo">
+        <button class="btn bp" id="btnPlay">JUGAR AHORA</button>
+      </div>
+      
+      <div id="sectionOnline" class="hidden">
+        <button class="btn bp" id="btnCreate">CREAR SALA</button>
+        <div class="join-row">
+          <input type="text" id="inputCode" placeholder="XXXX" maxlength="4">
+          <button class="btn bs" id="btnJoin">UNIRSE</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- LOBBY SCREEN -->
+    <div class="screen off" id="screenLobby">
+      <div class="lobby-header">
+        <div class="lbl">CÓDIGO DE SALA</div>
+        <div class="rcode" id="lobbyCode">----</div>
+        <div class="rchint">TAP PARA COPIAR</div>
+      </div>
+      <div class="plist" id="lobbyList"></div>
+      <div class="lbst" id="lobbyStatus">1/4 jugadores</div>
+      <button class="btn bp" id="btnStart" disabled>INICIAR</button>
+      <button class="btn bg" id="btnLeave">SALIR</button>
+    </div>
+
+    <!-- OVERLAYS -->
+    <div class="ovl off" id="overlayCountdown">
+      <div class="cdnum">3</div>
+    </div>
+
+    <div class="ovl off" id="overlayRound">
+      <div class="wbdg" id="roundBadge"></div>
+      <div class="otitle" id="roundTitle">RONDA 1</div>
+      <div class="osub" id="roundWinner">—</div>
+      <div class="oscr" id="roundScore"></div>
+      <div class="osub" id="roundNext">Siguiente en 3...</div>
+    </div>
+
+    <div class="ovl off" id="overlayMatch">
+      <div class="otitle" id="matchTitle">¡CAMPEÓN!</div>
+      <div class="osub" id="matchWinner"></div>
+      <div class="oscr" id="matchScore"></div>
+      <button class="btn bp" id="btnRematch">REVANCHA</button>
+      <button class="btn bg" id="btnHome">INICIO</button>
+    </div>
+  </div>
+
+  <!-- MÓDULOS -->
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
