@@ -2,6 +2,9 @@
  * Funciones utilitarias generales
  */
 
+// ARREGLO: Import movido al inicio del archivo
+import { COLORS } from '../config/constants.js';
+
 export const Utils = {
   /**
    * Genera ID aleatorio de caracteres
@@ -117,4 +120,5 @@ export const Utils = {
   },
 };
 
-import { COLORS } from '../config/constants.js';
+// ELIMINADO: Import que estaba aquí al final
+// import { COLORS } from '../config/constants.js';
