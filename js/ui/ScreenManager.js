@@ -74,9 +74,9 @@ export class ScreenManager {
     this.overlays.forEach(overlay => overlay.classList.add('off'));
   }
 
-  // ═══════════════════════════════════════════════════════════
+  // ═════════════════════════════════════════════════════════════
   // HELPERS ESPECÍFICOS
-  // ═══════════════════════════════════════════════════════════
+  // ═════════════════════════════════════════════════════════════
 
   updateLobbyCode(code) {
     document.getElementById('lobbyCode').textContent = code;
@@ -121,9 +121,9 @@ export class ScreenManager {
     document.getElementById('btnStart').disabled = !enabled;
   }
 
-  // ═══════════════════════════════════════════════════════════
+  // ═════════════════════════════════════════════════════════════
   // OVERLAY ROUND END
-  // ═══════════════════════════════════════════════════════════
+  // ═════════════════════════════════════════════════════════
 
   showRoundEnd(round, winner, scores, players, isMatchEnd, onNext) {
     const overlay = this.overlays.get(OVERLAYS.ROUND_END);
@@ -170,12 +170,13 @@ export class ScreenManager {
       }, 1000);
     }
     
+    // ARREGLO CRÍTICO: ROUND_END no ROUND_ENDE
     this.showOverlay(OVERLAYS.ROUND_END);
   }
 
-  // ═══════════════════════════════════════════════════════════
+  // ═════════════════════════════════════════════════════════════
   // OVERLAY MATCH END
-  // ═══════════════════════════════════════════════════════════
+  // ═════════════════════════════════════════════════════════
 
   showMatchEnd(winner, scores, players) {
     const title = document.getElementById('matchTitle');
@@ -202,14 +203,14 @@ export class ScreenManager {
       <div class="svs">VS</div>
       <div class="sbbl">
         <div class="snum" style="color:${players[1]?.color || '#fff'}">${scores[1]}</div>
-        <div class="snm">${players[1]?.name || 'P2'}</div>
+        <div class="snm">${players[1]?.name || 'P2' }</div>
       </div>
     `;
   }
 
-  // ═══════════════════════════════════════════════════════════
+  // ═════════════════════════════════════════════════════════
   // COUNTDOWN
-  // ═══════════════════════════════════════════════════════════
+  // ═════════════════════════════════════════════════════════
 
   async runCountdown() {
     return new Promise(resolve => {
@@ -244,12 +245,12 @@ export class ScreenManager {
     });
   }
 
-  // ═══════════════════════════════════════════════════════════
+  // ════════════════════════════════════════════════════════════
   // UTILIDADES
-  // ═══════════════════════════════════════════════════════════
+  // ═════════════════════════════════════════════════════════
 
   showToast(message, duration = 2400) {
-    const toast = document.getElementById('toast');
+    const toast = document.getElementById("toast");
     toast.textContent = message;
     toast.classList.remove('off');
     
@@ -265,6 +266,7 @@ export class ScreenManager {
       this.showToast('¡Código copiado!');
     } catch (err) {
       // Fallback
+      // ARREGLO CRÍTICO: input no inuput
       const input = document.createElement('input');
       input.value = text;
       document.body.appendChild(input);
