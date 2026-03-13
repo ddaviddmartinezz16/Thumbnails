@@ -14,19 +14,23 @@ export class TouchController {
     this.normalizedX = 0;
     this.normalizedY = 0;
     this.touchId = -1;
-    
+
+    // INICIALIZADAS - ARREGLO CRÍTICO
+    this.chargeAmount = 0;
+    this.chargeStartTime = 0;
+
     // Detección de doble tap para dash
     this.lastTapTime = 0;
     this.lastDirectionX = 0;
     this.lastDirectionY = 0;
-    
+
     // Callbacks
     this.onInputStart = null;
     this.onInputMove = null;
     this.onInputEnd = null;
     this.onParry = null;
     this.onDash = null;
-    
+
     this.bindEvents();
   }
 
@@ -50,11 +54,11 @@ export class TouchController {
 
   handleStart(event) {
     event.preventDefault();
-    
+
     for (const touch of event.changedTouches) {
       // Solo zona inferior para joystick
       if (!this.isInJoystickZone(touch.clientY)) continue;
-      
+
       if (!this.active) {
         // Primer dedo - iniciar joystick
         this.startJoystick(touch);
@@ -72,20 +76,20 @@ export class TouchController {
     this.normalizedX = 0;
     this.normalizedY = 0;
     this.touchId = touch.identifier;
-    
+
     // Detectar doble tap para dash
     const now = performance.now();
     const timeSinceLastTap = now - this.lastTapTime;
-    
-    if (timeSinceLastTap < CONFIG.DOUBLE_TAP_WINDOW && 
-        (Math.abs(this.lastDirectionX) > 0.15 || Math.abs(this.lastDirectionY) > 0.15)) {
+
+    if (timeSinceLastTap < CONFIG.DOUBLE_TAP_WINDOW &&
+      (Math.abs(this.lastDirectionX) > 0.15 || Math.abs(this.lastDirectionY) > 0.15)) {
       if (this.onDash) {
         this.onDash(this.lastDirectionX, this.lastDirectionY);
       }
     }
-    
+
     this.lastTapTime = now;
-    
+
     if (this.onInputStart) {
       this.onInputStart();
     }
@@ -93,25 +97,25 @@ export class TouchController {
 
   handleMove(event) {
     event.preventDefault();
-    
+
     for (const touch of event.changedTouches) {
       if (touch.identifier !== this.touchId || !this.active) continue;
-      
+
       const dx = touch.clientX - this.centerX;
       const dy = touch.clientY - this.centerY;
       const distance = Math.sqrt(dx * dx + dy * dy);
-      
+
       // Limitar al radio máximo
       const maxRadius = CONFIG.JOYSTICK_MAX_RADIUS;
       const clampedDistance = Math.min(distance, maxRadius);
       const ratio = clampedDistance / maxRadius;
-      
+
       // Normalizar
       if (distance > 0) {
         this.normalizedX = (dx / distance) * ratio;
         this.normalizedY = (dy / distance) * ratio;
       }
-      
+
       if (this.onInputMove) {
         this.onInputMove(this.normalizedX, this.normalizedY);
       }
@@ -120,47 +124,47 @@ export class TouchController {
 
   handleEnd(event) {
     event.preventDefault();
-    
+
     for (const touch of event.changedTouches) {
       if (touch.identifier !== this.touchId) continue;
-      
+
       // Calcular dirección final para posible dash en próximo tap
       const magnitude = Math.sqrt(
-        this.normalizedX * this.normalizedX + 
+        this.normalizedX * this.normalizedX +
         this.normalizedY * this.normalizedY
       );
-      
+
       if (magnitude > CONFIG.JOYSTICK_DEADZONE) {
         this.lastDirectionX = this.normalizedX / magnitude;
         this.lastDirectionY = this.normalizedY / magnitude;
       }
-      
+
       // Determinar tipo de ataque basado en duración
       const inputType = this.determineInputType();
-      
+
       if (this.onInputEnd) {
         this.onInputEnd(inputType, this.lastDirectionX, this.lastDirectionY, this.chargeAmount);
       }
-      
+
       this.reset();
     }
   }
 
   determineInputType() {
     if (!this.chargeStartTime) return null;
-    
+
     const held = performance.now() - this.chargeStartTime;
-    
+
     if (held < CONFIG.JAB_MAX_DURATION) {
       return { type: INPUT_TYPES.JAB, charge: 0 };
     } else if (held >= CONFIG.SMASH_MIN_DURATION) {
-      const charge = Math.min(1, 
-        (held - CONFIG.SMASH_CHARGE_TIME) / 
+      const charge = Math.min(1,
+        (held - CONFIG.SMASH_CHARGE_TIME) /
         (CONFIG.SMASH_MAX_CHARGE_TIME - CONFIG.SMASH_CHARGE_TIME)
       );
       return { type: INPUT_TYPES.SMASH, charge };
     }
-    
+
     return null; // Entre jab y smash: no hay acción
   }
 
@@ -173,14 +177,14 @@ export class TouchController {
     this.chargeAmount = 0;
   }
 
-  // Para sincronización con el player
+  // Para sincronización con el player - ARREGLO CRÍTICO
   setChargeStartTime(time) {
     this.chargeStartTime = time;
   }
 
   updateCharge() {
     if (!this.chargeStartTime || !this.active) return;
-    
+
     const held = performance.now() - this.chargeStartTime;
     if (held > CONFIG.SMASH_CHARGE_TIME) {
       this.chargeAmount = Math.min(1,
