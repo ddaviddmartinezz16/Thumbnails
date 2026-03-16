@@ -6,7 +6,7 @@
 
 import { Game } from ‘./core/Game.js’;
 
-// Prevenir scroll/zoom solo dentro del canvas (no en botones ni menús)
+// Prevenir scroll solo dentro del canvas, no en botones ni menús
 document.addEventListener(‘touchmove’, (e) => {
 if (e.target.tagName === ‘CANVAS’) {
 e.preventDefault();
