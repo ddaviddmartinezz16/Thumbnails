@@ -40,7 +40,6 @@ html, body {
   background: var(--bg);
   font-family: var(--font-body);
   color: var(--text);
-  touch-action: auto;
   user-select: none;
   -webkit-user-select: none;
 }
