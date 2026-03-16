@@ -58,11 +58,9 @@ if (!platform.active) continue;
   const dy = player.y - platform.y;
   const distance = Math.sqrt(dx * dx + dy * dy);
 
-  // El jugador está sobre esta plataforma si su centro cae dentro del radio
   if (distance <= platform.radius) {
     player.falling = false;
 
-    // Si se acerca al borde, empujarlo de vuelta
     const edgeDist = platform.radius - CONFIG.PLAYER_RADIUS;
     if (distance > edgeDist) {
       const nx = distance > 0 ? dx / distance : 0;
@@ -71,7 +69,6 @@ if (!platform.active) continue;
       player.x = platform.x + nx * edgeDist;
       player.y = platform.y + ny * edgeDist;
 
-      // Cancelar velocidad que sale hacia fuera
       const dot = player.vx * nx + player.vy * ny;
       if (dot > 0) {
         player.vx -= dot * nx * 0.8;
