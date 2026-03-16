@@ -31,7 +31,7 @@ STUN_DURATION: 900,
 // Round
 ROUND_DURATION: 90,          // segundos
 SHRINK_START_TIME: 55,       // segundos restantes para empezar a reducir
-PLATFORM_WARNING_TIME: 3,    // segundos de advertencia antes de caer
+PLATFORM_WARNING_TIME: 3,  // segundos de advertencia antes de caer
 WIN_ROUNDS: 2,
 
 // Physics
